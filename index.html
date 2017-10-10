@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Pomodoro Clock</title>
+  <link href="https://fonts.googleapis.com/css?family=Orbitron|VT323|Wire+One" rel="stylesheet">
+  
+  <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+
+      <link rel="stylesheet" href="css/style.css">
+
+  
+</head>
+
+<body>
+  <div class="container">
+<!-- <form><label>Break Time(minute):</label><input id="breaktimerinput" type="number"/></form>
+<form><label>Pomodoro Timer(minute):</label><input id="tempsDeTravail" type="number"/></form>
+ -->
+  <div >
+    <div class="setTime">
+      <h3>Break Time(in minutes):</h3>    
+  <button class="setTimeButtons btn" id="decreaseBreakTime">-</button><span class="timeInMinutes" id="breakTimeAmount"> 5 </span><button class="setTimeButtons btn" id="increaseBreakTime">+</button></div> 
+    
+  <img class="pomodoro-clock-design" src="http://res.cloudinary.com/dejyp5iex/image/upload/v1506105771/Pomodoro-Clock-Design-by_Gilbert_fqaerz.png"/>
+    <div class="setTime">
+      <h3>Work Time(in minutes):</h3>  
+    <button id="decreaseWorkTime" class="setTimeButtons btn">-</button><span class="timeInMinutes" id="workTimeAmount"> 25 </span><button class="setTimeButtons btn" id="increaseWorkTime">+</button></div>
+  </div>
+<div class="timers" id="timer">
+  <h1 id="whichTimeIsIt" class="work-time">Work Time!</h3>
+  <p id="timerOutput">25:00</p>
+  <button  id="start-timer"><i class="fa fa-3x fa-play-circle buttons"></i></button>
+  <button id="pause-timer" > <i class="fa fa-3x fa-pause-circle buttons"></i></button>
+  <button id="stop-timer"><i  class="fa fa-3x fa-stop-circle buttons"></i></button>
+  <button id="reset-timer"><i  class="fa fa-3x fa-refresh buttons"></i></button>
+</div>
+<div class="copyright">
+  <p>Coded and designed by <a href="https://codepen.io/BlessedCamper/" target="_blank"><strong>Gilbert</strong></a></p>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+    <script  src="js/index.js"></script>
+
+</body>
+</html>

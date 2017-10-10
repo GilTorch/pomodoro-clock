@@ -1,0 +1,82 @@
+body{
+  // background-image:url("http://res.cloudinary.com/dejyp5iex/image/upload/v1506097175/pomodoro-clock-2_amxa00.jpg");
+  // background-repeat:no-repeat;
+  // background-attachment:fixed;
+  // background-position:center;
+  // background-size:cover;
+  
+  background-color:#585360;
+  text-align:center;
+}
+
+
+.setTime{
+ display:inline-block;
+font-size:1.2em;
+font-family:"VT323",sans-serif;
+  .setTimeButtons{
+    color:white;
+    border-radius:50%;
+    vertical-align:middle;
+    background-color:rgba(0,0,0,0.4);
+  }
+  
+  .timeInMinutes{
+    
+    font-size:3em;
+    vertical-align:middle;
+  }
+  
+}
+
+.container{
+  h1{
+    text-align:center;
+  }
+}
+
+.pomodoro-clock-design{
+  width:25%;
+  margin:auto;
+}
+
+#timer{
+  // background-color:white;
+  text-align:center;
+  padding:3%;
+  h1{
+   font-family: 'VT323', monospace;
+   text-align:center;
+  }
+  #timerOutput{
+    background-color:rgba(0,0,0,0.2);
+    color:white;
+    border:1px solid gray;
+    border-radius:4px;
+    font-family:"Orbitron",sans-serif;
+    font-size:2em;
+   
+  }
+  // box-shadow:0px 0px 10px rgba(0,0,0,0.4)
+}
+
+
+button{
+  background-color:#585360;
+  border:0;
+}
+
+.buttons:hover{
+  background-color:none;
+     color:#ec1e27;
+     cursor:pointer;
+    }
+
+.work-time{
+  color:green;
+  text-shadow:0px 0px 5px black;
+}
+
+.disabled{
+ opacity:0.5;
+}
