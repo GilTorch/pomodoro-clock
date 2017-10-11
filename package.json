@@ -1,0 +1,25 @@
+{
+  "name": "pomodoro-clock",
+  "version": "1.0.0",
+  "description": "a web pomodoro clock to optimize the way you work!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GilTorch/pomodoro-clock.git"
+  },
+  "keywords": [
+    "javascript",
+    "web",
+    "pomodoro"
+  ],
+  "author": "Gilbert Torchon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GilTorch/pomodoro-clock/issues"
+  },
+  "homepage": "https://github.com/GilTorch/pomodoro-clock#readme",
+  "dependencies": {}
+}
