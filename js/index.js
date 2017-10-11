@@ -1,36 +1,44 @@
 
-var WorkTimeBreakTimeHandler=function(passedVue){
-  
+/*var WorkTimeBreakTimeHandler=function(passedVue){
+
   var myVue=passedVue;
-  var workTimer=workTimerPassed;
-  var breakTimer=breakTimerPassed;
+  var workTimer=new Timer(myVue);
+  var breakTimer=new Timer(myVue);
   var breakTimerEnds=false;
   var workTimerEnds=false;
-  
-  
-  this.setBreakTimer=function(breakTimer){
-    breakTimer=breakTimer;
+
+
+  this.setBreakTimerMiliseconds=function(breakTimerMiliseconds){
+    breakTimer.setMiliseconds(breakTimerMiliseconds);
   }
-  
-  this.setWorkTimer=function(workTimer){
-    workTimer=workTimer;
+
+  this.setWorkTimerMiliseconds=function(workTimerMiliseconds){
+    workTimer.setMiliseconds(workTimerMiliseconds);
   }
-  
-  this.launchWorkTimer=function(){
-    breakTimerEnds=true;
+
+  this.handleBreakTimeWorkTime=function(){
+    if(workTimer.getMiliseconds!==0)
+      launchWorkTimer();
+  }
+
+  var launchWorkTimer=function(){
     workTimerEnds=false;
-    workTimer.setMiliseconds(myVue.getWorkTime());
-    workTimer.startTimer();
-  }
-  
-  this.launchBreakTimer=function(){
-    workTimerEnds=true;
     breakTimerEnds=true;
-    breakTimer.setMiliseconds(myVue.getBreakTime());
     workTimer.startTimer();
   }
-  
-}
+
+  var launchBreakTimer=function(){
+    workTimerEnds=true;
+    breakTimerEnds=false;
+    workTimer.startTimer();
+  }
+
+  var stopTimer=function(){
+
+  }
+
+
+}*/
 
 
 function notifyMe(title,message){
@@ -49,7 +57,7 @@ function notifyMe(title,message){
            notify(title,message);
          }
       });
-     
+
     }
 }
 
@@ -65,58 +73,77 @@ function notify(title,message){
 }
 
 
-var Timer=function(passedVue){
-  
+var Pomodoro=function(){
+
   var myVue=passedVue;
-  
-  var miliseconds=0;
-  
-  var minutes=0;
-  
-  var seconds=0;
-  
   var intervalHandler;
   var timeoutHandler;
-  this.timerEnds=false;
+  var breakTimerMiliseconds=0;
+  var workTimerMiliseconds=0;
+  var minutes=0;
+  var seconds=0;
   var timerAlreadyStarted=false;
-  
-    this.setMiliseconds=function(passedMiliseconds){
+  var currentTimer="Work Timer";
+
+  this.setBreakTimerMiliseconds=function(passedMiliseconds){
      if(timerAlreadyStarted===false)
-        miliseconds=passedMiliseconds;
+        breaktimerMiliseconds=passedMiliseconds;
   }
-  
+
+  this.setWorkTimerMiliseconds=function(passedMiliseconds){
+        workTimerMiliseconds=passedMiliseconds;
+  }
+
   this.setVue=function(vue)
   {
-    myVue=vue;
+      myVue=vue;
   }
-  
- var stopTimer=function(){
-  timerAlreadyStarted=false;
-  minutes=0;
-  seconds=0;
-  clearInterval(intervalHandler);
-  clearInterval(timeoutHandler);
-  this.timerEnds=true;
-  // var breakTimeInMinutes=parseInt(myVue.getBreakTime());
-  // var breakTimeInMiliseconds=breakTimeInMinutes*1000*60;
-  // this.setMiliseconds(breakTimeInMiliseconds);
-  // this.startTimer();
-}
-  
 
-  
+  this.startPomodoro=function(){
+    this.startWorkTimer();
+  }
+
+  var startBreakTimer=function(){
+    currentTimer="Break Timer";
+    intervalHandler=setInterval(outputTime,1000);
+    timeoutHandler=setTimeout(stopCurrentTimer,breakTimerMiliseconds);
+  }
+
+  var startWorkTimer=function(){
+    currentTimer="Work Timer";
+    intervalHandler=setInterval(outputTime,1000);
+    timeoutHandler=setTimeout(timer,workTimerMiliseconds);
+  }
+
+  this.stopCurrentTimer=function(){
+    timerAlreadyStarted=false;
+    minutes=0;
+    seconds=0;
+    clearInterval(intervalHandler);
+    clearInterval(timeoutHandler);
+  }
+
+  this.resetCurrentTimer=function(){
+
+  }
+
+
   function outputTime(){
+
+    if(myVue==="undefined")
+        return new Error("No vue defined");
+
     var minutesAAfficher="00";
     seconds++;
     if(seconds>0 && seconds%60===0)
-      {    
+      {
         seconds=0;
-        minutes++;    
+        minutes++;
       }
 
     if(seconds<10)
       seconds="0"+seconds;
-   
+
     if(minutes<10)
     {
       minutesAAfficher="0"+minutes;
@@ -128,72 +155,37 @@ var Timer=function(passedVue){
     var milisecondsToMinutes=miliseconds/k;
     var output=minutesAAfficher+":"+seconds+" / "+milisecondsToMinutes+":00";
     myVue.updateTimer(output);
-    
-    console.log(output); 
+    console.log(output);
   }
-  
-  
-this.startTimer=function(){
- 
- if(timerAlreadyStarted===false)
-  {
-      timerAlreadyStarted=true;
-      this.timerEnds=false;
-      intervalHandler=setInterval(outputTime,1000);
-      timeoutHandler=setTimeout(stopTimer,miliseconds);
-  }
-  else
-  {
-   
-         notifyMe("Caution!","Timer already started. Press reset to reset the timer or press pause to pause the timer!");
-  }
-
-}
-
-this.forcedStop=function(){
-  timerAlreadyStarted=false;
-  minutes=0;
-  seconds=0;
-  clearInterval(intervalHandler);
-  clearInterval(timeoutHandler);
 }
 
 
 
-this.resetTimer=function(){
-  this.forcedStop();
-  this.startTimer();
-}
-  
-}
-
-
-  
 
 var Vue=function(){
-  
+
   var timerOutput=$("#timerOutput");
   var workTimeAmountOutput=$("#workTimeAmount");
   var breakTimeAmountOutput=$("#breakTimeAmount");
-  
+
   this.getWorkTime=function(){
     return workTimeAmountOutput.html();
   }
-  
+
   this.getBreakTime=function(){
     return breakTimeAmountOutput.html();
   }
-  
+
   this.updateTimer=function(str){
      console.log("Men ni: "+str)
      timerOutput.html(str);
   }
-  
+
   this.updateTimeAmount=function(str,which){
     str=str.toLowerCase();
     var actions=["increment","decrement"];
     var whichTime=["workTime","breakTime"];
-    
+
     if(actions.indexOf(str)===-1 && whichTime.indexOf(which)===-1)
       {
         return -1;
@@ -219,7 +211,7 @@ var Vue=function(){
       if(str==="increment")
       {
         var breakTimeAmountTemp=breakTimeAmountOutput.html();
-       
+
         breakTimeAmountTemp++;
         breakTimeAmountOutput.html(" "+breakTimeAmountTemp+" ");
       }
@@ -231,22 +223,21 @@ var Vue=function(){
         breakTimeAmountOutput.html(" "+breakTimeAmountTemp+" ");
       }
     }
-    
+
   }
-  
-  
+
+
 }
 
 
 var Controlleur=function(vue){
-  
+
   var myVue=vue;
-  var myModel=new WorkTimeBreakTimeHandler():
-  
+  var myModel=new Pomodoro(myVue);
   this.setVue=function(passedVue){
      myVue=passedVue;
   }
-  
+
   var boutons=$("button");
   this.gestionDesClicks=function(){
   boutons.click(function(){
@@ -254,10 +245,11 @@ var Controlleur=function(vue){
   {
   case "start-timer":
     console.log("timer started!");
-     var workTimeInMinutes=myVue.getWorkTime();
-     var workTimeInMiliseconds=workTimeInMinutes*60*1000;
-     myModel.setMiliseconds(workTimeInMiliseconds);
-     myModel.startTimer();
+     var workTimeInMiliseconds=myVue.getWorkTime()*60*1000;
+     var breakTimeInMiliseconds=myVue.getBreakTime()*60*1000;
+     myModel.setWorkTimerMiliseconds(workTimeInMiliseconds);
+     myModel.setBreakTimerMiliseconds(breakTimeInMiliseconds);
+     myModel.handleBreakTimeWorkTime();
   break;
   case "pause-timer":
     console.log("timer paused!");
@@ -286,18 +278,18 @@ var Controlleur=function(vue){
   case "decreaseWorkTime":
      console.log("Decrease Work Time!");
       myVue.updateTimeAmount("decrement","workTime");
-  break;      
+  break;
   }
-  
+
 });
 }
-  
+
 }
-         
-         
+
+
 $(document).ready(function(){
   var myVue=new Vue();
   var myControlleur=new Controlleur(myVue);
   myControlleur.gestionDesClicks();
-  
+
 })
