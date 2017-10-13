@@ -84,6 +84,7 @@ var Pomodoro=function(passedVue){
   var seconds=0;
   var timerAlreadyStarted=false;
   var currentTimer="Work Time";
+  var outputMiliseconds;
 
   this.setBreakTimerMiliseconds=function(passedMiliseconds){
      if(timerAlreadyStarted===false)
@@ -100,19 +101,20 @@ var Pomodoro=function(passedVue){
   }
 
   var startTimer=function(){
+    console.log("startTimer Function is called!");
     if(timerAlreadyStarted===false)
     {
       timerAlreadyStarted=true;
       if(currentTimer==="Work Time")
       {
-        alert(currentTimer);
-        miliseconds=workTimerMiliseconds;
-        console.log(miliseconds);
+        outputMiliseconds=workTimerMiliseconds;
         intervalHandler=setInterval(outputTime,1000);
         timeoutHandler=setTimeout(timerIsEnding,workTimerMiliseconds);
       }
       else {
-        miliseconds=breakTimerMiliseconds;
+        alert("Break Time is triggered!");
+        outputMiliseconds=breakTimerMiliseconds;
+        alert("Break Time registered: "+outputMiliseconds+" !");
         intervalHandler=setInterval(outputTime,1000);
         timeoutHandler=setTimeout(timerIsEnding,breakTimerMiliseconds);
       }
@@ -128,16 +130,13 @@ var Pomodoro=function(passedVue){
   }
 
   function timerIsEnding(){
-    currentTimer=("Work Time")?"Break Time":"Work Time";
+    currentTimer=(currentTimer==="Work Time")?"Break Time":"Work Time";
     timerAlreadyStarted=false;
     minutes=0;
     seconds=0;
     clearInterval(intervalHandler);
     clearInterval(timeoutHandler);
-    alert("STOP!");
-    alert(currentTimer);
     startTimer();
-    alert("STOP MOUSTIQUE!");
   }
 
   this.stopCurrentTimer=function(){
@@ -179,8 +178,8 @@ var Pomodoro=function(passedVue){
       minutesAAfficher=minutes;
     }
     var k=1000*60;
-    var milisecondsToMinutes=miliseconds/k;
-    var output=minutesAAfficher+":"+seconds+" / "+milisecondsToMinutes+":00";
+    var outputMilisecondsToMinutes=outputMiliseconds/k;
+    var output=minutesAAfficher+":"+seconds+" / "+outputMilisecondsToMinutes+":00";
     myVue.updateTimer(output);
     console.log(output);
   }
