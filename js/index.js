@@ -1,45 +1,4 @@
 
-/*var WorkTimeBreakTimeHandler=function(passedVue){
-
-  var myVue=passedVue;
-  var workTimer=new Timer(myVue);
-  var breakTimer=new Timer(myVue);
-  var breakTimerEnds=false;
-  var workTimerEnds=false;
-
-
-  this.setBreakTimerMiliseconds=function(breakTimerMiliseconds){
-    breakTimer.setMiliseconds(breakTimerMiliseconds);
-  }
-
-  this.setWorkTimerMiliseconds=function(workTimerMiliseconds){
-    workTimer.setMiliseconds(workTimerMiliseconds);
-  }
-
-  this.handleBreakTimeWorkTime=function(){
-    if(workTimer.getMiliseconds!==0)
-      launchWorkTimer();
-  }
-
-  var launchWorkTimer=function(){
-    workTimerEnds=false;
-    breakTimerEnds=true;
-    workTimer.startTimer();
-  }
-
-  var launchBreakTimer=function(){
-    workTimerEnds=true;
-    breakTimerEnds=false;
-    workTimer.startTimer();
-  }
-
-  var stopTimer=function(){
-
-  }
-
-
-}*/
-
 
 function notifyMe(title,message){
   if(!("Notification" in window))
@@ -78,21 +37,38 @@ var Pomodoro=function(passedVue){
   var myVue=passedVue;
   var intervalHandler;
   var timeoutHandler;
-  var breakTimerMiliseconds=0;
-  var workTimerMiliseconds=0;
+  var breakTimerMiliseconds;
+  var workTimerMiliseconds;
   var minutes=0;
   var seconds=0;
   var timerAlreadyStarted=false;
   var currentTimer="Work Time";
   var outputMiliseconds;
+  var bar="";
+
+
+  this.setBar=function(passedBarValue)
+  {
+    bar=passedBarValue;
+  }
+
 
   this.setBreakTimerMiliseconds=function(passedMiliseconds){
      if(timerAlreadyStarted===false)
-        breaktimerMiliseconds=passedMiliseconds;
+     {
+       breaktimerMiliseconds=passedMiliseconds;
+       alert("Break Time is set: "+breaktimerMiliseconds);
+     }
+
   }
 
   this.setWorkTimerMiliseconds=function(passedMiliseconds){
-        workTimerMiliseconds=passedMiliseconds;
+    if(timerAlreadyStarted===false)
+    {
+      workTimerMiliseconds=passedMiliseconds;
+      alert("Work Time is set: "+workTimerMiliseconds);
+    }
+
   }
 
   this.setVue=function(vue)
@@ -112,12 +88,12 @@ var Pomodoro=function(passedVue){
         timeoutHandler=setTimeout(timerIsEnding,workTimerMiliseconds);
       }
       else {
-        alert("Break Time is triggered!");
-        outputMiliseconds=breakTimerMiliseconds;
-        alert("Break Time registered: "+outputMiliseconds+" !");
+        //outputMiliseconds=breakTimerMiliseconds;
+        outputMiliseconds=bar;
         intervalHandler=setInterval(outputTime,1000);
-        timeoutHandler=setTimeout(timerIsEnding,breakTimerMiliseconds);
+        timeoutHandler=setTimeout(timerIsEnding,bar);
       }
+      myVue.tellWhichTimerIsActive(currentTimer+"!");
     }
     else{
       console.log("Timer Already Started!!!");
@@ -126,6 +102,7 @@ var Pomodoro=function(passedVue){
   }
 
   this.startPomodoro=function(){
+    alert("TEST!"+workTimerMiliseconds);
     startTimer();
   }
 
@@ -155,9 +132,6 @@ var Pomodoro=function(passedVue){
 
 
   function outputTime(){
-
-    if(myVue==="undefined")
-        return new Error("No vue defined");
 
     var minutesAAfficher="00";
     seconds++;
@@ -193,6 +167,7 @@ var Vue=function(){
   var timerOutput=$("#timerOutput");
   var workTimeAmountOutput=$("#workTimeAmount");
   var breakTimeAmountOutput=$("#breakTimeAmount");
+  var whichTimeIsIt=$("#whichTimeIsIt");
 
   this.getWorkTime=function(){
     return workTimeAmountOutput.html();
@@ -205,6 +180,19 @@ var Vue=function(){
   this.updateTimer=function(str){
      console.log("Men ni: "+str)
      timerOutput.html(str);
+  }
+
+  this.tellWhichTimerIsActive=function(str){
+    whichTimeIsIt.html(str);
+    if(str==="Work Time!")
+    {
+      whichTimeIsIt.removeClass("break-time");
+      whichTimeIsIt.addClass("work-time");
+    }
+    else{
+      whichTimeIsIt.removeClass("work-time");
+      whichTimeIsIt.addClass("break-time");
+    }
   }
 
   this.updateTimeAmount=function(str,which){
@@ -275,6 +263,7 @@ var Controlleur=function(vue){
      var breakTimeInMiliseconds=myVue.getBreakTime()*60*1000;
      myModel.setWorkTimerMiliseconds(workTimeInMiliseconds);
      myModel.setBreakTimerMiliseconds(breakTimeInMiliseconds);
+     myModel.setBar(breakTimeInMiliseconds);
      myModel.startPomodoro();
   break;
   case "pause-timer":
