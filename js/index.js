@@ -57,7 +57,7 @@ var Pomodoro=function(passedVue){
      if(timerAlreadyStarted===false)
      {
        breaktimerMiliseconds=passedMiliseconds;
-       alert("Break Time is set: "+breaktimerMiliseconds);
+       // alert("Break Time is set: "+breaktimerMiliseconds);
      }
 
   }
@@ -66,7 +66,7 @@ var Pomodoro=function(passedVue){
     if(timerAlreadyStarted===false)
     {
       workTimerMiliseconds=passedMiliseconds;
-      alert("Work Time is set: "+workTimerMiliseconds);
+      // alert("Work Time is set: "+workTimerMiliseconds);
     }
 
   }
@@ -102,12 +102,19 @@ var Pomodoro=function(passedVue){
   }
 
   this.startPomodoro=function(){
-    alert("TEST!"+workTimerMiliseconds);
     startTimer();
   }
 
   function timerIsEnding(){
-    currentTimer=(currentTimer==="Work Time")?"Break Time":"Work Time";
+    if(currentTimer==="Work Time")
+    {
+      notifyMe(currentTimer+" is Over!"," Relax and take a break.");
+      currentTimer="Break Time";
+    }
+    else{
+      notifyMe(currentTimer+" is Over!","it's time to go back to work!");
+      currentTimer="Work Time";
+    }
     timerAlreadyStarted=false;
     minutes=0;
     seconds=0;
